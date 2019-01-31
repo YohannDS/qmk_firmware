@@ -1,1 +1,1 @@
-# The default keymap for Redox
+# Custom bvofrak keymap for Redox
