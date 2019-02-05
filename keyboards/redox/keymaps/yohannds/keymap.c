@@ -26,11 +26,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,   KC_Q,    KC_W,    KC_E,     KC_R,   KC_T,    KC_F6,                             KC_F7,   KC_Y,    KC_U,    KC_I,     KC_O,    KC_P,   KC_TAB,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_GRAVE, KC_A,    KC_S,    KC_D,     KC_F/**/,KC_G,     NAV,                              NAV,    KC_H,    KC_J/**/,  KC_K,   KC_L,   KC_SCLN ,XXXXXXX,
+       NAV,      KC_A,    KC_S,    KC_D,     KC_F/**/,KC_G,   NAV,                              NAV,    KC_H,    KC_J/**/,  KC_K,   KC_L,   KC_SCLN ,NAV,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     XXXXXXX, KC_Z,     KC_X,    KC_C,    KC_V,     KC_B,   KC_LALT, KC_LCTL,         KC_RALT, KC_RCTL, KC_N,    KC_M,   KC_COMM,  KC_DOT, KC_BSLASH, XXXXXXX ,
+     KC_GRAVE, KC_Z,     KC_X,    KC_C,    KC_V,     KC_B,   KC_LALT, KC_LCTL,         KC_LALT, KC_RCTL, KC_N,    KC_M,   KC_COMM,  KC_DOT, KC_SLASH, XXXXXXX ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-     KC_ESC,  XXXXXXX,  KC_LWIN, KC_ALGR,     KC_LSFT,     KC_BSPC,  KC_DEL,          KC_ENT,  KC_SPC,     KC_RSFT,      KC_ALGR,  KC_LWIN, XXXXXXX, KC_ESC
+     KC_ESC,  XXXXXXX,  XXXXXXX, KC_LWIN,     KC_LSFT,     KC_BSPC,  KC_DEL,          KC_ENT,  KC_SPC,     KC_ALGR,      KC_LWIN,  XXXXXXX, XXXXXXX, KC_ESC
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   ),
 
@@ -40,11 +40,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                         ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      _______, KC_VOLU,  KC_HOME, KC_UP,   KC_END,  KC_CUT, _______ ,                          _______,  KC_WH_U, KC_KP_1, KC_KP_2, KC_KP_3,KC_MNXT,_______ ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_MUTE, XXXXXXX,  KC_LEFT, KC_DOWN,KC_RIGHT, KC_COPY,_______ ,                          _______,  KC_KP_0, KC_KP_4, KC_KP_5, KC_KP_6,KC_MPLY,_______ ,
+     _______, KC_MUTE,  KC_LEFT, KC_DOWN,KC_RIGHT, KC_COPY,_______ ,                          _______,  KC_KP_0, KC_KP_4, KC_KP_5, KC_KP_6,KC_MPLY,_______ ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      _______, KC_VOLD,  KC_PGUP, XXXXXXX,KC_PGDOWN,KC_PASTE,KC_BTN1,KC_BTN2,         _______, _______,  KC_WH_D, KC_KP_7, KC_KP_8, KC_KP_9,KC_MPRV,_______ ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
      _______, _______, _______, _______,      _______,     _______ ,_______,         _______ ,_______ ,    _______ ,     _______ ,_______ ,_______ ,_______
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
   )
+};
+
+// Change LED colors depending on the layer.
+uint32_t layer_state_set_user(uint32_t state)
+{
+  switch (biton32(state)) {
+  case _BVOFRAK:
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+    rgblight_setrgb_green();
+    break;
+  case _NAV:
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+    rgblight_setrgb_blue();
+    break;
+  
+  default: //  for any other layers, or the default layer
+    rgblight_setrgb_yellow();
+    break;
+  }
+  return state;
 };
